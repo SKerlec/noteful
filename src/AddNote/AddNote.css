@@ -1,0 +1,19 @@
+.AddNote {
+	color: azure;
+	width: 40%;
+	margin-left: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.AddNote .label-text {
+	color: azure;
+}
+
+.registration__hint {
+	margin: 10px 0;
+}
+
+.AddNote_button:hover {
+	cursor: pointer;
+}

@@ -1,23 +1,47 @@
-import React from 'react';
-import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
-import NotePageNav from './NotePageNav'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Button from "./CircleButton/CircleButton";
+import ApiContext from "./ApiContext";
+import "./NotePageNav.css";
 
-describe(`NotePageNav component`, () => {
-  const props = {
-    folder: {
-      "name": "Important"
-    }
-  }
+class NotePageNav extends Component {
+	static defaultProps = {
+		history : {
+			goBack : () => {}
+		},
+		match   : {
+			params : {}
+		}
+	};
+	static contextType = ApiContext;
 
-  it('renders a .NotePageNav by default', () => {
-    const wrapper = shallow(<NotePageNav />)
-    expect(toJson(wrapper)).toMatchSnapshot()
-  })
+	render() {
+		const { notes, folders } = this.context;
+		const { noteId } = this.props.match.params;
+		const findFolder = (folders = [], folderId) => folders.find((folder) => folder.id === folderId);
+		const findNote = (notes = [], noteId) => notes.find((note) => note.id === noteId);
+		const note = findNote(notes, noteId) || {};
+		const folder = findFolder(folders, note.folderId);
+		return (
+			<div className="NotePageNav">
+				<Button
+					tag="button"
+					role="link"
+					onClick={() => this.props.history.goBack()}
+					className="NotePageNav__back-button"
+				>
+					<br />
+					Back
+				</Button>
+				{folder && <h3 className="NotePageNav__folder-name">{folder.name}</h3>}
+			</div>
+		);
+	}
+}
 
-  it('renders a h3 with folder name when in props', () => {
-    const h3 = shallow(<NotePageNav {...props} />)
-      .find('.NotePageNav__folder-name')
-    expect(toJson(h3)).toMatchSnapshot()
-  })
-})
+NotePageNav.propTypes = {
+	history : PropTypes.object.isRequired,
+	match   : PropTypes.object.isRequired
+};
+
+export default NotePageNav;

@@ -1,0 +1,9 @@
+.AddFolder {
+	color: azure;
+	width: 40%;
+	margin-left: 20px;
+}
+
+.AddFolder_button:hover {
+	cursor: pointer;
+}
